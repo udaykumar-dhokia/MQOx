@@ -18,6 +18,25 @@ MQOx is a lightweight, flexible message queuing system powered by Redis. It supp
 
 ---
 
+## **Overview**
+
+A **message queue** is a system that lets applications handle tasks **asynchronously** - meaning jobs are added to a queue and processed later by background workers instead of immediately. This keeps your app fast, scalable, and fault-tolerant.
+
+**MQOx** uses Redis to manage these queues efficiently.
+It lets you:
+
+- Enqueue jobs
+- Process them using workers
+- Automatically move failed jobs to a **Dead Letter Queue (DLQ)**
+
+MQOx helps you build reliable background job systems for tasks like sending emails, generating reports, or handling any heavy processing all without blocking your main application.
+
+---
+
+  <img src="./src/assets/Flow.jpg" alt="MQOx Logo"/>
+
+---
+
 ## 📁 **Project Structure**
 
 ```
