@@ -24,13 +24,9 @@ export class Employee {
       const job: Job = JSON.parse(raw);
 
       try {
-        if (job.type == "email") {
-          throw Error("Something fishy");
-        }
         await handler(job);
       } catch (error) {
         if (job.options.retryCount! > 0) {
-          console.log(job.options.retryCount);
           job.options.retryCount!--;
           await redisClient.lPush(this.queueName, JSON.stringify(job));
         } else {

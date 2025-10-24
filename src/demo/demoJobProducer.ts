@@ -5,7 +5,7 @@ const queue = new Queue({ queueName: "taskQueue" });
 async function main() {
   await queue.connect();
 
-  queue.enqueue(
+  const job1 = await queue.enqueue(
     "email",
     {
       to: "john@example.com",
@@ -16,11 +16,13 @@ async function main() {
       retryCount: 5,
     }
   );
-  queue.enqueue(
+  const job2 = await queue.enqueue(
     "notification",
     { message: "Push Notification Here" },
     { delay: 2000 }
   );
+  console.log(`Job created: ${job1.id}`);
+  console.log(`Job created: ${job2.id}`);
 
   const size = await queue.size();
 }

@@ -18,6 +18,17 @@ MQOx is a lightweight, flexible message queuing system powered by Redis. It supp
 
 ---
 
+> #### ✅ **Update: Pub/Sub Model (QoS Level 0) Now Supported**
+
+---
+
+## Supported Models
+
+| Model       | QoS Level | Persistence | Description                             | Ideal For                         |
+| ----------- | --------- | ----------- | --------------------------------------- | --------------------------------- |
+| Queue       | QoS 1     | ✅ Yes      | Reliable processing with retries & DLQ  | Background jobs, task execution   |
+| **Pub/Sub** | QoS 0     | ❌ No       | Broadcast messaging without persistence | Real-time updates & notifications |
+
 ## **Overview**
 
 A **message queue** is a system that lets applications handle tasks **asynchronously** - meaning jobs are added to a queue and processed later by background workers instead of immediately. This keeps your app fast, scalable, and fault-tolerant.

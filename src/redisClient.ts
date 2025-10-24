@@ -3,18 +3,37 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const redisClient = createClient({
-  url: process.env.REDIS_URL,
-});
+export function createRedisClient(
+  url: string = process.env.REDIS_URL || "redis://localhost:6379"
+) {
+  const client = createClient({ url });
 
-redisClient.on("error", (err) => console.error("Redis Client Error", err));
+  client.on("error", (err) => console.error("Redis Client Error", err));
 
-export async function connectRedis(
-  url: string = "redis://localhost:6379"
-): Promise<void> {
+  return client;
+}
+
+let redisClient = createRedisClient();
+
+export const publisher = createRedisClient();
+export const subscriber = createRedisClient();
+
+export async function connectRedis(url?: string): Promise<void> {
+  if (url) {
+    redisClient = createRedisClient(url);
+  }
+
   if (!redisClient.isOpen) {
     await redisClient.connect();
-    console.log("Connected to Redis");
+    console.log(`Connected to Redis at ${redisClient.options!.url}`);
+  }
+
+  if (!publisher.isOpen) {
+    await publisher.connect();
+  }
+
+  if (!subscriber.isOpen) {
+    await subscriber.connect();
   }
 }
 
