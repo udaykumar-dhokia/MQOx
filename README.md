@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="./public/assets/logo.jpeg" width="80px" alt="MQOx Logo"/>
+  <img src="https://drive.google.com/uc?export=view&id=10DPEd8SMJxXtIKmmExo_WJn4wHffUEGg" width="80px" alt="MQOx Logo"/>
 
   <h1 style="margin-top: 10px;">MQOx</h1>
   <p><strong>Message Queuing & Background Job Processing System</strong></p>
@@ -45,44 +45,7 @@ MQOx helps you build reliable background job systems for tasks like sending emai
 
 ---
 
-  <img src="./public/assets/Flow.jpg" alt="MQOx Logo"/>
-
----
-
-## 📁 **Project Structure**
-
-```
-MQOx
-│
-├── src
-│ ├── demo
-│ │ ├── demoJobEmployee.ts # Worker demo
-│ │ └── demoJobProducer.ts # Queue demo producer
-│ │
-│ ├── pubsub
-│ │ ├── qos-0.ts # Pub/Sub QoS 0
-│ │ └── qos-1.ts # Pub/Sub QoS 1
-│ │
-│ ├── types
-│ │ ├── employee.type.ts
-│ │ ├── enqueue.type.ts
-│ │ └── job.type.ts
-│ │
-│ ├── employee.ts
-│ ├── queue.ts
-│ ├── redisClient.ts
-│ └── index.ts
-│
-├── public/assets
-│ ├── example.jpeg
-│ ├── Flow.jpg
-│ └── logo.jpeg
-│
-├── .env
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+  <img src="https://drive.google.com/uc?export=view&id=1z--DOdK-UT9qXikcFo5P0xuKkFXHz7Qq" alt="MQOx Logo"/>
 
 ---
 
@@ -146,12 +109,49 @@ main();
 
 ---
 
+## 📁 **Project Structure**
+
+```
+MQOx
+│
+├── src
+│ ├── demo
+│ │ ├── demoJobEmployee.ts # Worker demo
+│ │ └── demoJobProducer.ts # Queue demo producer
+│ │
+│ ├── pubsub
+│ │ ├── qos-0.ts # Pub/Sub QoS 0
+│ │ └── qos-1.ts # Pub/Sub QoS 1
+│ │
+│ ├── types
+│ │ ├── employee.type.ts
+│ │ ├── enqueue.type.ts
+│ │ └── job.type.ts
+│ │
+│ ├── employee.ts
+│ ├── queue.ts
+│ ├── redisClient.ts
+│ └── index.ts
+│
+├── public/assets
+│ ├── example.jpeg
+│ ├── Flow.jpg
+│ └── logo.jpeg
+│
+├── .env
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+---
+
 ## Installation & Setup
 
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-repo/MQOx.git
+git clone https://github.com/udaykumar-dhokia/MQOx.git
 cd MQOx
 ```
 
@@ -259,7 +259,6 @@ You can define these scripts in your `package.json` like:
 
 ## Roadmap
 
-- 🔜 Publish/Subscribe
 - 🔜 Priority Queue
 - 🔜 Scheduled (Cron) Jobs
 - 🔜 REST API for Monitoring

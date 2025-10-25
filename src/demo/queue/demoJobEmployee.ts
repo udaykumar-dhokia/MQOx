@@ -1,4 +1,4 @@
-import { Employee } from "../index";
+import { Employee } from "../../index";
 
 const employee = new Employee("taskQueue");
 

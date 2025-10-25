@@ -1,5 +1,5 @@
-import redisClient, { connectRedis } from "./redisClient";
-import { Job } from "./types/job.type";
+import redisClient, { connectRedis } from "../redisClient";
+import { Job } from "../types/job.type";
 
 export class Employee {
   private deadLetterQueueName: string;

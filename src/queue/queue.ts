@@ -1,8 +1,8 @@
 import { randomUUID } from "crypto";
-import redisClient, { connectRedis } from "./redisClient";
-import { QueueOptions } from "./types/employee.type";
-import { Job } from "./types/job.type";
-import { EnqueueOptions } from "./types/enqueue.type";
+import redisClient, { connectRedis } from "../redisClient";
+import { QueueOptions } from "../types/employee.type";
+import { Job } from "../types/job.type";
+import { EnqueueOptions } from "../types/enqueue.type";
 
 export class Queue {
   private queueName: string;

@@ -1,4 +1,4 @@
-import { Queue } from "../index";
+import { Queue } from "../../index";
 
 const queue = new Queue({ queueName: "taskQueue" });
 
