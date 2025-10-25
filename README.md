@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="./src/assets/logo.jpeg" width="80px" alt="MQOx Logo"/>
+  <img src="./public/assets/logo.jpeg" width="80px" alt="MQOx Logo"/>
 
   <h1 style="margin-top: 10px;">MQOx</h1>
   <p><strong>Message Queuing & Background Job Processing System</strong></p>
@@ -45,7 +45,7 @@ MQOx helps you build reliable background job systems for tasks like sending emai
 
 ---
 
-  <img src="./src/assets/Flow.jpg" alt="MQOx Logo"/>
+  <img src="./public/assets/Flow.jpg" alt="MQOx Logo"/>
 
 ---
 
@@ -55,21 +55,30 @@ MQOx helps you build reliable background job systems for tasks like sending emai
 MQOx
 │
 ├── src
-│   ├── demo
-│   │   ├── demoJobEmployee.ts       # Example worker to process jobs
-│   │   └── demoJobProducer.ts       # Example producer to enqueue jobs
-│   │
-│   ├── types
-│   │   ├── employee.type.ts
-│   │   ├── enqueue.type.ts
-│   │   └── job.type.ts
-│   │
-│   ├── employee.ts                  # Worker implementation
-│   ├── queue.ts                     # Queue producer implementation
-│   ├── redisClient.ts              # Redis connection helper
-│   └── index.ts                    # Library entry point
+│ ├── demo
+│ │ ├── demoJobEmployee.ts # Worker demo
+│ │ └── demoJobProducer.ts # Queue demo producer
+│ │
+│ ├── pubsub
+│ │ ├── qos-0.ts # Pub/Sub QoS 0
+│ │ └── qos-1.ts # Pub/Sub QoS 1
+│ │
+│ ├── types
+│ │ ├── employee.type.ts
+│ │ ├── enqueue.type.ts
+│ │ └── job.type.ts
+│ │
+│ ├── employee.ts
+│ ├── queue.ts
+│ ├── redisClient.ts
+│ └── index.ts
 │
-├── .env                             # Redis configuration
+├── public/assets
+│ ├── example.jpeg
+│ ├── Flow.jpg
+│ └── logo.jpeg
+│
+├── .env
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -86,6 +95,54 @@ MQOx
 | Retry Mechanism       | Automatically retries failed jobs                 |
 | Dead Letter Queue     | Moves permanently failed jobs to a DLQ            |
 | Scalable Architecture | Multiple workers can consume from the same queue  |
+
+---
+
+## Usage
+
+### Queue Example
+
+```js
+const { Queue, Employee } = require("mqox");
+
+const queue = new Queue("emailQueue");
+const worker = new Employee("emailQueue");
+
+worker.work(async (job) => {
+  console.log("Processing job:", job);
+});
+```
+
+### Pub/Sub QoS 0
+
+```js
+const { PubSub0 } = require("mqox");
+
+const pubsub = new PubSub0("notifications");
+
+pubsub.subscribe((msg) => console.log("Received:", msg));
+pubsub.publish({ text: "Hello world!" });
+```
+
+### Pub/Sub QoS 1
+
+```js
+const { PubSub1 } = require("mqox");
+
+const pubsub = new PubSub1("order-stream", "order-group", "worker-1");
+
+async function main() {
+  await pubsub.connect();
+
+  await pubsub.publish({ orderId: 101, status: "CREATED" });
+
+  pubsub.subscribe(async (message) => {
+    console.log("Received QoS1 message:", message);
+  });
+}
+
+main();
+```
 
 ---
 
@@ -196,17 +253,6 @@ You can define these scripts in your `package.json` like:
   "demo:employee": "ts-node src/demo/demoJobEmployee.ts",
   "demo:producer": "ts-node src/demo/demoJobProducer.ts"
 }
-```
-
----
-
-## Viewing Dead Letter Queue
-
-To inspect failed jobs:
-
-```ts
-const deadJobs = await redisClient.lRange("emailQueue:DLQ", 0, -1);
-console.log(deadJobs);
 ```
 
 ---

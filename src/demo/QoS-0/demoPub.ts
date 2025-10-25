@@ -1,4 +1,4 @@
-import { PubSub0 } from "../index";
+import { PubSub0 } from "../../index";
 
 async function Publisher() {
   const pub = new PubSub0("orders");
