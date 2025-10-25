@@ -1,7 +1,7 @@
-import { PubSub } from "../index";
+import { PubSub0 } from "../index";
 
 async function Publisher() {
-  const pub = new PubSub("orders");
+  const pub = new PubSub0("orders");
   await pub.connect();
   await pub.publish({
     orderId: "123",

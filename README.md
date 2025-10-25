@@ -18,16 +18,17 @@ MQOx is a lightweight, flexible message queuing system powered by Redis. It supp
 
 ---
 
-> #### ✅ **Update: Pub/Sub Model (QoS Level 0) Now Supported**
+> #### ✅ **Update: Pub/Sub with QoS Level 1 (Guaranteed Delivery) is now supported!**
 
 ---
 
 ## Supported Models
 
-| Model       | QoS Level | Persistence | Description                             | Ideal For                         |
-| ----------- | --------- | ----------- | --------------------------------------- | --------------------------------- |
-| Queue       | QoS 1     | ✅ Yes      | Reliable processing with retries & DLQ  | Background jobs, task execution   |
-| **Pub/Sub** | QoS 0     | ❌ No       | Broadcast messaging without persistence | Real-time updates & notifications |
+| Model       | QoS Level | Persistence | Delivery Guarantee          | Ideal For                               |
+| ----------- | --------- | ----------- | --------------------------- | --------------------------------------- |
+| Queue       | QoS 1     | ✅ Yes      | Guaranteed (with DLQ)       | Background jobs, task runners           |
+| Pub/Sub     | QoS 0     | ❌ No       | Best effort (fire & forget) | Real-time notifications                 |
+| **Pub/Sub** | **QoS 1** | ✅ Yes      | **At-Least-Once Delivery**  | Financial transactions, critical events |
 
 ## **Overview**
 
