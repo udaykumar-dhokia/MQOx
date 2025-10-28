@@ -12,23 +12,26 @@
     <img src="https://img.shields.io/badge/Contributions-Welcome-brightgreen" alt="Contributions Welcome Badge"/>
   </p>
 
+[![NPM Stats](https://nodei.co/npm/@udthedeveloper/mqox.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@udthedeveloper/mqox/)
+
 </div>
 
-MQOx is a lightweight, flexible message queuing system powered by Redis. It supports delayed jobs, retries, worker processing, and features a Dead Letter Queue (DLQ) for robust fault tolerance.
+MQOx is a lightweight, flexible message queuing system powered by Redis. It supports delayed jobs, retries, **priority-based job scheduling**, worker processing, and features a Dead Letter Queue (DLQ) for robust fault tolerance.
 
 ---
 
-> #### ✅ **Update: Pub/Sub with QoS Level 1 (Guaranteed Delivery) is now supported!**
+> #### ✅ **Update: **Priority Queue** (High → Low execution order)**
 
 ---
 
 ## Supported Models
 
-| Model       | QoS Level | Persistence | Delivery Guarantee          | Ideal For                               |
-| ----------- | --------- | ----------- | --------------------------- | --------------------------------------- |
-| Queue       | QoS 1     | ✅ Yes      | Guaranteed (with DLQ)       | Background jobs, task runners           |
-| Pub/Sub     | QoS 0     | ❌ No       | Best effort (fire & forget) | Real-time notifications                 |
-| **Pub/Sub** | **QoS 1** | ✅ Yes      | **At-Least-Once Delivery**  | Financial transactions, critical events |
+| Model            | QoS Level | Persistence | Delivery Guarantee          | Ideal For                                |
+| ---------------- | --------- | ----------- | --------------------------- | ---------------------------------------- |
+| Queue            | QoS 1     | ✅ Yes      | Guaranteed (with DLQ)       | Background jobs, task runners            |
+| Queue (Priority) | QoS 1     | ✅ Yes      | Guaranteed (priority order) | Task scheduling, notifications, SLA jobs |
+| Pub/Sub          | QoS 0     | ❌ No       | Best effort (fire & forget) | Real-time notifications                  |
+| Pub/Sub          | QoS 1     | ✅ Yes      | At-Least-Once Delivery      | Financial transactions, critical events  |
 
 ## **Overview**
 
@@ -66,7 +69,7 @@ MQOx helps you build reliable background job systems for tasks like sending emai
 ### Queue Example
 
 ```js
-const { Queue, Employee } = require("mqox");
+const { Queue, Employee } = require("@udthedeveloper/mqox");
 
 const queue = new Queue("emailQueue");
 const worker = new Employee("emailQueue");
@@ -76,10 +79,60 @@ worker.work(async (job) => {
 });
 ```
 
+### Priority Queue
+
+#### Producer
+
+```js
+const { Queue } = require("@udthedeveloper/mqox");
+
+async function main() {
+  const queue = new Queue({ queueName: "emailQueue", priority: true });
+  await queue.connect();
+
+  await queue.enqueue(
+    "sendEmail",
+    { to: "vip@domain.com" },
+    { priorityLevel: 1 }
+  );
+  await queue.enqueue(
+    "sendEmail",
+    { to: "user@domain.com" },
+    { priorityLevel: 3 }
+  );
+  await queue.enqueue(
+    "sendEmail",
+    { to: "subscriber@domain.com" },
+    { priorityLevel: 5 }
+  );
+
+  console.log("✅ Emails enqueued by priority");
+}
+
+main();
+```
+
+#### Employee
+
+```js
+const { Employee } = require("@udthedeveloper/mqox");
+
+async function main() {
+  const worker = new Employee("emailQueue", { priority: true });
+  await worker.work(async (job) => {
+    console.log(`📩 Sending email to ${job.payload.to}`);
+    await new Promise((r) => setTimeout(r, 1000));
+    console.log(`✅ Email sent to ${job.payload.to}`);
+  });
+}
+
+main();
+```
+
 ### Pub/Sub QoS 0
 
 ```js
-const { PubSub0 } = require("mqox");
+const { PubSub0 } = require("@udthedeveloper/mqox");
 
 const pubsub = new PubSub0("notifications");
 
@@ -90,7 +143,7 @@ pubsub.publish({ text: "Hello world!" });
 ### Pub/Sub QoS 1
 
 ```js
-const { PubSub1 } = require("mqox");
+const { PubSub1 } = require("@udthedeveloper/mqox");
 
 const pubsub = new PubSub1("order-stream", "order-group", "worker-1");
 
@@ -259,7 +312,6 @@ You can define these scripts in your `package.json` like:
 
 ## Roadmap
 
-- 🔜 Priority Queue
 - 🔜 Scheduled (Cron) Jobs
 - 🔜 REST API for Monitoring
 - 🔜 Web Dashboard
