@@ -35,7 +35,7 @@ export class Queue {
 
     if (this.isPriority) {
       const score = Date.now() + priorityLevel * 1000 + delay;
-      await redisClient.zAdd(this.queueName, {
+      await redisClient.zAdd(`pqueue:${this.queueName}`, {
         score,
         value: JSON.stringify(job),
       });
@@ -43,7 +43,7 @@ export class Queue {
         `📦 [Priority Queue] Enqueued job ${job.id} (priority ${priorityLevel})`
       );
     } else {
-      await redisClient.lPush(this.queueName, JSON.stringify(job));
+      await redisClient.lPush(`queue:${this.queueName}`, JSON.stringify(job));
       console.log(`📦 [Queue] Enqueued job ${job.id}`);
     }
 

@@ -16,8 +16,8 @@ export class Employee {
     } else {
       this.deadLetterQueueName =
         deadLetterQueueNameOrOptions?.priority && this.queueName
-          ? `${this.queueName}:DLQ`
-          : `${this.queueName}:DLQ`;
+          ? `${this.queueName}`
+          : `${this.queueName}`;
       this.isPriority = deadLetterQueueNameOrOptions?.priority ?? false;
     }
   }
@@ -35,12 +35,12 @@ export class Employee {
 
       try {
         if (this.isPriority) {
-          const result = await redisClient.zPopMin(this.queueName);
+          const result = await redisClient.zPopMin(`pqueue:${this.queueName}`);
           if (result && result.value) {
             job = JSON.parse(result.value);
           }
         } else {
-          const result = await redisClient.brPop(this.queueName, 0);
+          const result = await redisClient.brPop(`queue:${this.queueName}`, 0);
           if (result) {
             job = JSON.parse(result.element);
           }
@@ -51,7 +51,6 @@ export class Employee {
           continue;
         }
 
-        // Process the job
         await handler(job);
       } catch (error) {
         if (job) {
@@ -62,12 +61,15 @@ export class Employee {
 
             if (this.isPriority) {
               // Requeue in priority mode (same score or slightly lower)
-              await redisClient.zAdd(this.queueName, {
+              await redisClient.zAdd(`pqueue:${this.queueName}`, {
                 score: Date.now() + (job.options.priorityLevel ?? 5) * 1000,
                 value: JSON.stringify(job),
               });
             } else {
-              await redisClient.lPush(this.queueName, JSON.stringify(job));
+              await redisClient.lPush(
+                `queue:${this.queueName}`,
+                JSON.stringify(job)
+              );
             }
 
             console.warn(
@@ -77,7 +79,7 @@ export class Employee {
             // Move to Dead Letter Queue
             console.error(`❌ Job ${job.id} failed permanently:`, error);
             await redisClient.lPush(
-              this.deadLetterQueueName,
+              `dlq:${this.deadLetterQueueName}`,
               JSON.stringify(job)
             );
           }

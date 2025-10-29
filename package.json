@@ -1,9 +1,12 @@
 {
-  "name": "@udaykumar-dhokia/mqox",
-  "version": "1.1.0",
+  "name": "@udthedeveloper/mqox",
+  "version": "1.2.0",
   "description": "Message Queuing & Background Job Processing System",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "mqox-dashboard": "dist/cli.js"
+  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",

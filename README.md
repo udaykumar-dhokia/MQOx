@@ -20,7 +20,7 @@ MQOx is a lightweight, flexible message queuing system powered by Redis. It supp
 
 ---
 
-> #### ✅ **Update: **Priority Queue** (High → Low execution order)**
+> #### ✅ **Update: **Priority Queue** (High → Low execution order) & Web Dashboard is now available to monitor queues, priority queues, DLQs**
 
 ---
 
@@ -46,6 +46,8 @@ It lets you:
 
 MQOx helps you build reliable background job systems for tasks like sending emails, generating reports, or handling any heavy processing all without blocking your main application.
 
+  <img src="https://drive.google.com/uc?export=view&id=1c38p1BlGOKFoW8QyQE97p-UUsA_UQ2cy" alt="MQOx Dashboard"/>
+
 ---
 
   <img src="https://drive.google.com/uc?export=view&id=1z--DOdK-UT9qXikcFo5P0xuKkFXHz7Qq" alt="MQOx Logo"/>
@@ -65,6 +67,16 @@ MQOx helps you build reliable background job systems for tasks like sending emai
 ---
 
 ## Usage
+
+## Dashboard
+
+```ts
+~/Desktop/MQOx$ mqox-dashboard
+
+MQOx Dashboard is starting...
+Connected to Redis at redis://localhost:6379
+MQOx Dashboard: http://localhost:3000
+```
 
 ### Queue Example
 
@@ -250,7 +262,7 @@ In a new terminal:
 npm run demo:producer
 ```
 
-### ✅ Expected Output
+### Expected Output
 
 - Jobs will be added to the queue.
 - Worker consumes them.
@@ -288,7 +300,7 @@ npm run demo:producer
 
 ---
 
-## 🧪 Commands Overview
+## Commands Overview
 
 | Command                 | Description          |
 | ----------------------- | -------------------- |
@@ -307,14 +319,6 @@ You can define these scripts in your `package.json` like:
   "demo:producer": "ts-node src/demo/demoJobProducer.ts"
 }
 ```
-
----
-
-## Roadmap
-
-- 🔜 Scheduled (Cron) Jobs
-- 🔜 REST API for Monitoring
-- 🔜 Web Dashboard
 
 ---
 

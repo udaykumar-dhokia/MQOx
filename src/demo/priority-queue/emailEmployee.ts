@@ -1,7 +1,9 @@
 import { Employee } from "../../index";
 
 async function main() {
-  const worker = new Employee("emailQueue");
+  const worker = new Employee("emailQueue", {
+    priority: true,
+  });
 
   await worker.work(async (job) => {
     console.log(
